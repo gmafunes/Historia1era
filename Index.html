@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Historia Medieval</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f9ff; }
+    h1 { text-align: center; color: #2c3e50; }
+    .question { margin: 20px 0; font-size: 18px; }
+    .options button {
+      display: block; margin: 8px 0; padding: 10px; width: 100%;
+      border-radius: 6px; border: 1px solid #ccc; cursor: pointer;
+      font-size: 16px; text-align: left;
+    }
+    .correct { background-color: #2ecc71 !important; color: white; }
+    .incorrect { background-color: #e74c3c !important; color: white; }
+    .explanation { margin-top: 10px; font-size: 16px; color: #34495e; }
+    #score { margin-top: 20px; font-weight: bold; font-size: 18px; color: #2c3e50; }
+  </style>
+</head>
+<body>
+  <h1>Quiz Historia Medieval</h1>
+  <div id="quiz"></div>
+  <div id="score"></div>
+
+<script>
+const preguntasHistoria = [
+  {
+    pregunta: "¿Qué grupo social estaba encargado de la defensa militar?",
+    opciones: [
+      { texto: "Nobleza", icono: "🏰" },
+      { texto: "Clero", icono: "⛪" },
+      { texto: "Campesinado", icono: "🌾" },
+      { texto: "Burguesía", icono: "💰" }
+    ],
+    correcta: 0,
+    explicacion: "La nobleza tenía como función principal la defensa militar y el gobierno de los feudos."
+  },
+  {
+    pregunta: "¿Qué innovación agrícola permitió mayor rendimiento?",
+    opciones: [
+      { texto: "Arado de hierro", icono: "⚒️" },
+      { texto: "Molino de viento", icono: "🌬️" },
+      { texto: "Rotación bienal", icono: "🔄" },
+      { texto: "Collera rígida", icono: "🐎" }
+    ],
+    correcta: 0,
+    explicacion: "El arado de hierro con vertedera permitió remover mejor el suelo y aumentar el rendimiento."
+  },
+  {
+    pregunta: "¿Qué sistema agrícola reemplazó la rotación bienal?",
+    opciones: [
+      { texto: "Rotación trienal", icono: "🌱" },
+      { texto: "Barbecho total", icono: "🟫" },
+      { texto: "Cultivo intensivo", icono: "🌾" },
+      { texto: "Agricultura urbana", icono: "🏙️" }
+    ],
+    correcta: 0,
+    explicacion: "La rotación trienal dividía las tierras en tres partes, aumentando variedad y reduciendo hambrunas."
+  },
+  {
+    pregunta: "¿Qué expediciones militares buscaban recuperar Tierra Santa?",
+    opciones: [
+      { texto: "Cruzadas", icono: "✝️" },
+      { texto: "Reconquista", icono: "⚔️" },
+      { texto: "Campañas romanas", icono: "🏛️" },
+      { texto: "Guerras campesinas", icono: "🌾" }
+    ],
+    correcta: 0,
+    explicacion: "Las Cruzadas fueron expediciones organizadas por el Papa y los reyes para recuperar Jerusalén."
+  },
+  {
+    pregunta: "¿Qué ciudad cayó en 1492 completando la Reconquista?",
+    opciones: [
+      { texto: "Toledo", icono: "🏰" },
+      { texto: "Sevilla", icono: "🌇" },
+      { texto: "Granada", icono: "🌹" },
+      { texto: "Barcelona", icono: "🏖️" }
+    ],
+    correcta: 2,
+    explicacion: "La caída de Granada en 1492 marcó el final de la Reconquista española."
+  },
+  {
+    pregunta: "¿Qué ciudades italianas controlaban el comercio de lujo?",
+    opciones: [
+      { texto: "Venecia y Génova", icono: "🚢" },
+      { texto: "París y Londres", icono: "🏙️" },
+      { texto: "Brujas y Gante", icono: "🧵" },
+      { texto: "Roma y Florencia", icono: "🎨" }
+    ],
+    correcta: 0,
+    explicacion: "Venecia y Génova controlaban el comercio de especias, seda y artículos de lujo provenientes de Oriente."
+  },
+  {
+    pregunta: "¿Qué institución surgió para regular oficios artesanales?",
+    opciones: [
+      { texto: "Universidades", icono: "🎓" },
+      { texto: "Órdenes mendicantes", icono: "⛪" },
+      { texto: "Gremios", icono: "🛠️" },
+      { texto: "Ferias", icono: "🛍️" }
+    ],
+    correcta: 2,
+    explicacion: "Los gremios regulaban precios, calidad y condiciones de trabajo de los artesanos."
+  },
+  {
+    pregunta: "¿Qué nueva clase social surgió en las ciudades?",
+    opciones: [
+      { texto: "Campesinado", icono: "🌾" },
+      { texto: "Burguesía", icono: "💰" },
+      { texto: "Nobleza", icono: "🏰" },
+      { texto: "Clero", icono: "⛪" }
+    ],
+    correcta: 1,
+    explicacion: "La burguesía estaba formada por comerciantes, artesanos y banqueros en las ciudades medievales."
+  },
+  {
+    pregunta: "¿Qué orden mendicante predicaba la pobreza voluntaria?",
+    opciones: [
+      { texto: "Dominicos", icono: "📖" },
+      { texto: "Franciscanos", icono: "🕊️" },
+      { texto: "Benedictinos", icono: "🙏" },
+      { texto: "Jesuitas", icono: "✝️" }
+    ],
+    correcta: 1,
+    explicacion: "Los franciscanos, fundados por San Francisco de Asís, predicaban la pobreza voluntaria."
+  },
+  {
+    pregunta: "¿Qué ciudad se destacó en la producción de paños finos?",
+    opciones: [
+      { texto: "Florencia", icono: "🎨" },
+      { texto: "Brujas", icono: "🧵" },
+      { texto: "París", icono: "🏙️" },
+      { texto: "Venecia", icono: "🚢" }
+    ],
+    correcta: 0,
+    explicacion: "Florencia se destacó por la producción de paños finos, seda y perfumes."
+  }
+];
+
+let indice = 0;
+let puntaje = 0;
+
+function mostrarPregunta() {
+  if (indice >= preguntasHistoria.length) {
+    document.getElementById("quiz").innerHTML = "<p>Fin del quiz</p>";
+    document.getElementById("score").innerText = `Tu puntaje final: ${puntaje}/${preguntasHistoria.length}`;
+    return;
+  }
+  const q = preguntasHistoria[indice];
+  let html = `<div class="question">${q.pregunta}</div><div class="options">`;
+  q.opciones.forEach((op, i) => {
+    html += `<button onclick="responder(${i}, this)">${op.icono} ${op.texto}</button>`;
+  });
+  html += "</div>";
+  document.getElementById("quiz").innerHTML = html;
+}
+
+function responder(opcion, btn) {
+  const q = preguntasHistoria[indice];
+  const correcta = q.correcta;
+  const botones = document.querySelectorAll(".options button");
+  botones[correcta].classList.add("correct");
+  if (opcion === correcta) {
+    puntaje++;
+    btn.classList.add("correct");
+  } else {
+    btn.classList.add("incorrect");
+  }
+  const exp = `<div class="explanation">Explicación: ${q.explicacion}</div>`;
+  document.getElementById("quiz").innerHTML += exp;
+  indice++;
+  document.getElementById("score").innerText = `Puntaje actual: ${puntaje}/${preguntasHistoria.length}`;
+  setTimeout(mostrarPregunta, 7500); // 7,5 segundos
+}
+
+mostrarPregunta();
+</script>
+</body>
+</
